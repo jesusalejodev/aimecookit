@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
@@ -17,20 +17,24 @@ const HomeScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      style={{ padding: 10, alignItems: 'center' }}
+      style={[styles.card, styles.shadow]}
       onPress={() => navigation.navigate('Category', { category: item })}
     >
       <Image
         source={{ uri: item.strCategoryThumb }}
-        style={{ width: 150, height: 150, borderRadius: 75 }}
+        style={styles.categoryImage}
       />
-      <Text style={{ marginTop: 10, fontSize: 18 }}>{item.strCategory}</Text>
+      <Text style={styles.categoryText}>{item.strCategory}</Text>
     </TouchableOpacity>
   );
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 24, marginBottom: 20 }}>Meal Categories</Text>
+    <View style={styles.container}>
+      <Image
+        style={styles.homeimg}
+        source={require('../assets/homeimg.jpeg')}
+      />
+      <Text style={styles.heading}>Explora por categorías</Text>
       <FlatList
         data={categories}
         renderItem={renderItem}
@@ -40,5 +44,53 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  homeimg: {
+    height: 200,
+    width: 400,
+
+  },
+  heading: {
+    fontSize: 24,
+    marginVertical: 20,
+  },
+  card: {
+    backgroundColor: '#b9ebe8',
+    borderRadius: 15,
+    padding: 10,
+    alignItems: 'center',
+    marginBottom: 10,
+    marginHorizontal: 10,
+    flexBasis: '45%', // This will make the cards take up 45% of the screen width
+  },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
+
+  },
+  categoryImage: {
+    width: 150,
+    height: 100,
+    borderRadius: 15,
+  },
+  categoryText: {
+    marginTop: 10,
+    fontSize: 18,
+    color: 'black', // White text color
+  },
+});
 
 export default HomeScreen;
