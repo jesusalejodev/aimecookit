@@ -15,10 +15,14 @@ const HomeScreen = ({ navigation }) => {
       });
   }, []);
 
+  const handleCategoryPress = (category) => {
+    navigation.navigate('Category', { category });
+  };
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={[styles.card, styles.shadow]}
-      onPress={() => navigation.navigate('Category', { category: item })}
+      onPress={() => handleCategoryPress(item)}
     >
       <Image
         source={{ uri: item.strCategoryThumb }}
@@ -67,7 +71,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     marginHorizontal: 10,
-    flexBasis: '45%', // This will make the cards take up 45% of the screen width
+    flexBasis: '43%', // This will make the cards take up 45% of the screen width
   },
   shadow: {
     shadowColor: "#000",
