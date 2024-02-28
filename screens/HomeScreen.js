@@ -38,6 +38,7 @@ const HomeScreen = ({ navigation }) => {
         style={styles.homeimg}
         source={require('../assets/homeimg.jpeg')}
       />
+      <Text style={styles.welcomeText}>Bienvenido</Text>
       <Text style={styles.heading}>Explora por categorías</Text>
       <FlatList
         data={categories}
@@ -54,18 +55,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor:'#fff',
   },
   homeimg: {
-    height: 200,
+    height: 250,
     width: 400,
 
   },
+  welcomeText: {
+    position: 'absolute',
+    top: '22%',
+    left: '5%',
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: 'white',
+    textShadowColor: 'rgba(0, 0, 0, 0.5)', // Color de la sombra
+    textShadowOffset: { width: 2, height: 2 }, // Offset de la sombra (horizontal y vertical)
+    textShadowRadius: 5, // Radio de la sombra
+    zIndex: 1, // Asegura que el texto esté sobre la imagen
+  },
   heading: {
     fontSize: 24,
+    fontWeight: 'bold',
     marginVertical: 20,
+
+    
   },
   card: {
-    backgroundColor: '#b9ebe8',
+    backgroundColor: '#f0f0f0',
     borderRadius: 15,
     padding: 10,
     alignItems: 'center',
@@ -74,7 +91,7 @@ const styles = StyleSheet.create({
     flexBasis: '43%', // This will make the cards take up 45% of the screen width
   },
   shadow: {
-    shadowColor: "#000",
+    /*shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -82,7 +99,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
 
-    elevation: 3,
+    elevation: 3,*/
 
   },
   categoryImage: {
@@ -93,7 +110,8 @@ const styles = StyleSheet.create({
   categoryText: {
     marginTop: 10,
     fontSize: 18,
-    color: 'black', // White text color
+    fontWeight:'400',
+    color: '#243030', 
   },
 });
 

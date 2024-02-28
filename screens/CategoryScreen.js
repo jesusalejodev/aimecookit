@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const CategoryScreen = ({ route }) => {
   const { category } = route.params;
+  const navigation = useNavigation(); 
   const [meals, setMeals] = useState([]);
 
   useEffect(() => {
@@ -16,10 +18,14 @@ const CategoryScreen = ({ route }) => {
       });
   }, [category]);
 
+  const handleMealPress = (mealId) => {
+    navigation.navigate('MealDetail', { mealId });
+  };
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => console.log(item)} // Aquí podrías navegar a la pantalla de detalles del plato si lo deseas
+      onPress={() => handleMealPress(item.idMeal)}
     >
       <Image
         source={{ uri: item.strMealThumb }}
@@ -34,10 +40,10 @@ const CategoryScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-        <Image
-          source={{ uri: category.strCategoryThumb }}
-          style={styles.categoryImage}
-        />
+      <Image
+        source={{ uri: category.strCategoryThumb }}
+        style={styles.categoryImage}
+      />
       <Text style={styles.heading}>Platos de {category.strCategory}</Text>
       <FlatList
         data={meals}
