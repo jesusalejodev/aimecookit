@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { listMealCategories } from '../services/themealdbapi';
 
 const HomeScreen = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
-      .then(response => response.json())
-      .then(data => {
-        setCategories(data.categories);
-      })
-      .catch(error => {
-        console.error('Error fetching categories:', error);
-      });
+    const fetchCategories = async () => {
+      const categoriesData = await listMealCategories();
+      setCategories(categoriesData);
+    };
+    fetchCategories();
   }, []);
 
   const handleCategoryPress = (category) => {
@@ -36,10 +35,19 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Image
         style={styles.homeimg}
-        source={require('../assets/homeimg.jpeg')}
+        source={require('/WSReactNative/aimecookit/assets/homeimg.jpeg')}
       />
       <Text style={styles.welcomeText}>Bienvenido</Text>
-      <Text style={styles.heading}>Explora por categorías</Text>
+      <View style={styles.row}>
+        <Text style={styles.heading}>Explora por categorías</Text>
+        <TouchableOpacity
+          style={styles.searchIcon}
+          onPress={() => navigation.navigate('Find')}
+        >
+          <Feather name="search" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         data={categories}
         renderItem={renderItem}
@@ -55,12 +63,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#fff',
+    backgroundColor: '#fff',
   },
   homeimg: {
     height: 250,
     width: 400,
 
+  },
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  searchIcon: {
+    marginLeft: 90,
   },
   welcomeText: {
     position: 'absolute',
@@ -78,8 +94,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginVertical: 20,
-
-    
   },
   card: {
     backgroundColor: '#f0f0f0',
@@ -90,18 +104,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     flexBasis: '43%', // This will make the cards take up 45% of the screen width
   },
-  shadow: {
-    /*shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-
-    elevation: 3,*/
-
-  },
   categoryImage: {
     width: 150,
     height: 100,
@@ -110,8 +112,8 @@ const styles = StyleSheet.create({
   categoryText: {
     marginTop: 10,
     fontSize: 18,
-    fontWeight:'400',
-    color: '#243030', 
+    fontWeight: '400',
+    color: '#243030',
   },
 });
 

@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import { lookupMealById } from '../services/themealdbapi';
 
-const MealDetailScreen = ({ route }) => {
+const MealDetailScreen = ({ route, navigation }) => {
   const { mealId } = route.params;
-  const [mealDetails, setMealDetails] = useState(null);
+  const [meal, setMeal] = useState(null);
 
   useEffect(() => {
-    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
-      .then(response => response.json())
-      .then(data => {
-        setMealDetails(data.meals[0]);
-      })
-      .catch(error => {
-        console.error('Error fetching meal details:', error);
-      });
+    const fetchMeal = async () => {
+      const mealDetails = await lookupMealById(mealId);
+      setMeal(mealDetails);
+    };
+    fetchMeal();
   }, [mealId]);
 
-  if (!mealDetails) {
+  if (!meal) {
     return (
       <View style={styles.container}>
         <Text>Loading...</Text>
@@ -28,29 +26,29 @@ const MealDetailScreen = ({ route }) => {
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <Image
-          source={{ uri: mealDetails.strMealThumb }}
+          source={{ uri: meal.strMealThumb }}
           style={styles.mealImage}
         />
         <View style={styles.mealDetailsContainer}>
-          <Text style={styles.mealTitle}>{mealDetails.strMeal}</Text>
-          <Text style={styles.mealCategory}>Category: {mealDetails.strCategory}</Text>
-          <Text style={styles.mealArea}>Area: {mealDetails.strArea}</Text>
+          <Text style={styles.mealTitle}>{meal.strMeal}</Text>
+          <Text style={styles.mealCategory}>Category: {meal.strCategory}</Text>
+          <Text style={styles.mealArea}>Area: {meal.strArea}</Text>
           <Text style={styles.mealIngredientsTitle}>Ingredients:</Text>
-          {renderIngredients(mealDetails)}
+          {renderIngredients(meal)}
           <Text style={styles.mealInstructionsTitle}>Instructions:</Text>
-          <Text style={styles.mealInstructions}>{mealDetails.strInstructions}</Text>
+          <Text style={styles.mealInstructions}>{meal.strInstructions}</Text>
         </View>
       </ScrollView>
     </View>
   );
 };
 
-const renderIngredients = (mealDetails) => {
+const renderIngredients = (meal) => {
   const ingredients = [];
 
   for (let i = 1; i <= 20; i++) {
-    const ingredient = mealDetails[`strIngredient${i}`];
-    const measure = mealDetails[`strMeasure${i}`];
+    const ingredient = meal[`strIngredient${i}`];
+    const measure = meal[`strMeasure${i}`];
 
     if (ingredient && measure) {
       ingredients.push(
