@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { listMealCategories } from '../services/themealdbapi';
+import { Feather } from '@expo/vector-icons'; // Importa el icono de lupa
+import { listMealCategories } from '../services/themealdbapi'; // Importa la función para obtener categorías de comidas
 
 const HomeScreen = ({ navigation }) => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]); // Define un estado para almacenar las categorías de comidas
 
   useEffect(() => {
+    // Carga las categorías cuando el componente se monta
     const fetchCategories = async () => {
-      const categoriesData = await listMealCategories();
-      setCategories(categoriesData);
+      const categoriesData = await listMealCategories(); // Obtiene las categorías de comidas de la API
+      setCategories(categoriesData); // Actualiza el estado con las categorías obtenidas
     };
-    fetchCategories();
-  }, []);
+    fetchCategories(); // Llama a la función para cargar las categorías
+  }, []); 
 
   const handleCategoryPress = (category) => {
-    navigation.navigate('Category', { category });
+    navigation.navigate('Category', { category }); // Navega a la pantalla 'Category' con la categoría seleccionada
   };
 
   const renderItem = ({ item }) => (
+    // Renderiza un elemento de categoría en la lista plana
     <TouchableOpacity
       style={[styles.card, styles.shadow]}
       onPress={() => handleCategoryPress(item)}
@@ -33,12 +35,14 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* Muestra una imagen de fondo */}
       <Image
         style={styles.homeimg}
         source={require('/WSReactNative/aimecookit/assets/homeimg.jpeg')}
       />
       <Text style={styles.welcomeText}>Bienvenido</Text>
       <View style={styles.row}>
+        {/* Muestra el encabezado y la lupa */}
         <Text style={styles.heading}>Explora por categorías</Text>
         <TouchableOpacity
           style={styles.searchIcon}
@@ -48,11 +52,12 @@ const HomeScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
+      {/* Muestra la lista de categorías */}
       <FlatList
         data={categories}
         renderItem={renderItem}
         keyExtractor={item => item.idCategory}
-        numColumns={2}
+        numColumns={2} // Muestra las categorías en dos columnas
       />
     </View>
   );
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     marginHorizontal: 10,
-    flexBasis: '43%', // This will make the cards take up 45% of the screen width
+    flexBasis: '43%', 
   },
   categoryImage: {
     width: 150,
@@ -117,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default HomeScreen; 

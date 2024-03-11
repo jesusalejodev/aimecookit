@@ -1,11 +1,15 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
+// Componente funcional RowPlato que muestra un elemento de comida en una fila
 const RowPlato = ({ meal, onPress }) => {
   return (
+    // Componente TouchableOpacity que actúa como contenedor de la fila y es sensible al tacto
     <TouchableOpacity style={styles.card} onPress={onPress}>
+      {/* Imagen de la comida */}
       <Image source={{ uri: meal.strMealThumb }} style={styles.image} />
       <View style={styles.textContainer}>
+        {/* Título de la comida */}
         <Text style={styles.title}>{meal.strMeal}</Text>
       </View>
     </TouchableOpacity>
